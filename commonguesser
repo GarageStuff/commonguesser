@@ -1,0 +1,46 @@
+Dictionary<int,int> totals= new Dictionary<int,int>();
+int guesses = 100;
+
+Guess();
+void Guess()
+{
+    for (int i = 0; i < guesses; i++)
+    {
+        PickRandomNumber();
+    }
+    var result = Calculate();
+    Console.WriteLine(result);
+}
+void PickRandomNumber()
+{
+    Random random= new Random();
+    int guess = random.Next(101);
+    if (totals.TryGetValue(guess, out int result))
+    {
+        result += 1;
+        totals[guess] = totals[guess] + 1;
+    }
+    else 
+    {
+        totals.Add(guess, 1);
+    }
+}
+
+Tuple <int,int>Calculate()
+{
+    int pair1=0;
+    int pair2=0;
+    int mostCommon = 0;
+    foreach (KeyValuePair<int, int> total in totals)
+    {
+        if (total.Value > mostCommon)
+        {
+            pair1 = total.Key;
+            pair2 = total.Value;
+            mostCommon = total.Value;
+        }
+    }
+    var result = Tuple.Create(pair1, pair2);
+    return result;
+
+}
